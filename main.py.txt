@@ -1,0 +1,32 @@
+import pandas as pd
+import os
+
+# Update with the correct file paths
+exam_scores_path = 'C:/Users/MATHS DEPARTMENT/Documents/exam_scores.xlsx'
+ca_scores_path = 'C:/Users/MATHS DEPARTMENT/Documents/ca_scores.xlsx'
+
+# Check if both files exist
+if os.path.exists(exam_scores_path) and os.path.exists(ca_scores_path):
+
+    # Load the Excel files
+    exam_scores_df = pd.read_excel(exam_scores_path)
+    ca_scores_df = pd.read_excel(ca_scores_path)
+
+    # Rename columns for consistency
+    exam_scores_df.columns = ['Registration Number', 'Exam Score']
+    ca_scores_df.columns = ['Registration Number', 'CA Score']
+
+    # Merge the two DataFrames using an outer join to preserve all registration numbers
+    merged_df = pd.merge(ca_scores_df, exam_scores_df, on='Registration Number', how='outer')
+
+    # Save the merged DataFrame to a new Excel file
+    output_path = 'C:/Users/MATHS DEPARTMENT/Documents/merged_scores_complete.xlsx'
+    merged_df.to_excel(output_path, index=False)
+
+    print(f'Merged data saved to {output_path}')
+else:
+    # Print missing file error
+    if not os.path.exists(exam_scores_path):
+        print(f"File not found: {exam_scores_path}")
+    if not os.path.exists(ca_scores_path):
+        print(f"File not found: {ca_scores_path}")
